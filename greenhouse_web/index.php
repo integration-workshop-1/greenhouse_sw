@@ -108,7 +108,7 @@
                                     </tr>
                                     <tr>
                                         <td>Soil moisture</td>
-                                        <td><?php echo $row_manual['manual_data_soil_moisture'];?></td>
+                                        <td><?php echo (((100 - ($row_manual['manual_data_soil_moisture'])/40.95)+100)%100)."%";?></td>
                                     </tr>
                                     <tr>
                                         <td>Air Humidity</td>
@@ -150,7 +150,7 @@
                                     </tr>
                                     <tr>
                                         <td>Soil moisture</td>
-                                        <td><?php echo $row_automatic['plant_soil_moisture'];?></td>
+                                        <td><?php echo (((100 - ($row_automatic['plant_soil_moisture'])/40.95)+100)%100)."%";?></td>
                                     </tr>
                                     <tr>
                                         <td>Air Humidity</td>

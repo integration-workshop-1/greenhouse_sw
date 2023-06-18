@@ -8,6 +8,8 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     <meta http-equiv="refresh" content="10">
+    
+
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -15,7 +17,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
     
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -30,12 +32,15 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/graphs.js"></script>
+
 </head>
 
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
         
-        <?php include ("sliderbar.php"); ?>
+        <?php include ("sliderbar.php"); //<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>?>
 
 
             <!-- Chart Start -->
@@ -50,29 +55,21 @@
                             <canvas id="chart1"></canvas>
                             <canvas id="chart2"></canvas>
                             <canvas id="chart3"></canvas>
-
+                            <canvas id="chart4"></canvas>
 
                         <script>
-                            // Obtém os dados do arquivo PHP
-                            fetch('getdata.php')
-                                .then(response => response.json())
-                                .then(data => {
-                                    // Dados para o primeiro gráfico
-                                    const dataChart1 = data.dados1;
-                                    const labels = dataChart1.map(item => item.read_timestamp);
-                                    const values = dataChart1.map(item => item.sensor_read);
-
-                                    // Cria o primeiro gráfico usando Chart.js
-                                    const ctx1 = document.getElementById('chart1').getContext('2d');
-                                    const chart1 = new Chart(ctx1, {
-                                        type: 'line',
+                            
+                            function createChart(elementId, title, labels, data, borderColor, xText, yText){
+                                var ctx = document.getElementById(elementId).getContext('2d');
+                                var chart = new Chart(ctx, {
+                                     type: 'line',
                                                 data: {
                                                     labels: labels,
                                                     datasets: [{
-                                                    label: 'Soil moisture sensor',
-                                                    data: values,
+                                                    label: title,
+                                                    data: data,
                                                     fill: false,
-                                                    borderColor: 'rgba(0, 156, 255, .9)',
+                                                    borderColor: borderColor,
                                                     tension: 0.1
                                                     }]
                                                 },
@@ -83,103 +80,46 @@
                                                         display: true,
                                                         title: {
                                                         display: true,
-                                                        text: ''
+                                                        text: xText
                                                     }
                                                 },
                                                     y: {
                                                         display: true,
                                                         title: {
                                                         display: true,
-                                                        text: 'Read'
+                                                        text: yText
                                                     }
                                                 }
                                             }
                                         }
                                     });
+                            }
+                            //AJAX
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', 'getdata.php', true);
+                            xhr.onload = function(){
+                                if(xhr.status == 200){
+                                    var data = JSON.parse(xhr.responseText);
+
+                                    var chart1Data = data.chart1;
+                                    createChart('chart1', chart1Data.title,chart1Data.labels, chart1Data.values, chart1Data.borderColor, chart1Data.xText, chart1Data.yText);
 
 
-                                    const dataChart2 = data.dados2;
-                                    const labels2 = dataChart2.map(item => item.read_timestamp);
-                                    const values2 = dataChart2.map(item => item.sensor_read);
+                                    var chart2Data = data.chart2;
+                                    createChart('chart2', chart2Data.title,chart2Data.labels, chart2Data.values, chart2Data.borderColor, chart2Data.xText, chart2Data.yText);
 
-                                    // Cria o primeiro gráfico usando Chart.js
-                                    const ctx2 = document.getElementById('chart2').getContext('2d');
-                                    const chart2 = new Chart(ctx2, {
-                                        type: 'line',
-                                                data: {
-                                                    labels: labels2,
-                                                    datasets: [{
-                                                    label: 'Air humidity sensor',
-                                                    data: values2,
-                                                    fill: false,
-                                                    borderColor: 'rgba(255, 0, 0, .9)',
-                                                    tension: 0.1
-                                                    }]
-                                                },
-                                                 options: {
-                                                    responsive: true,
-                                                    scales: {
-                                                    x: {
-                                                        display: true,
-                                                        title: {
-                                                        display: true,
-                                                        text: ''
-                                                    }
-                                                },
-                                                    y: {
-                                                        display: true,
-                                                        title: {
-                                                        display: true,
-                                                        text: 'Read'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    });
+                                    var chart3Data = data.chart3;
+                                    createChart('chart3', chart3Data.title,chart3Data.labels, chart3Data.values, chart3Data.borderColor, chart3Data.xText, chart3Data.yText);
 
-                                    const dataChart3 = data.dados3;
-                                    const labels3 = dataChart3.map(item => item.read_timestamp);
-                                    const values3 = dataChart3.map(item => item.sensor_read);
+                                    var chart4Data = data.chart4;
+                                    createChart('chart4', chart4Data.title,chart4Data.labels, chart4Data.values, chart4Data.borderColor, chart4Data.xText, chart4Data.yText);
 
-                                    // Cria o primeiro gráfico usando Chart.js
-                                    const ctx3 = document.getElementById('chart3').getContext('2d');
-                                    const chart3 = new Chart(ctx3, {
-                                        type: 'line',
-                                                data: {
-                                                    labels: labels3,
-                                                    datasets: [{
-                                                    label: 'Temperature sensor',
-                                                    data: values3,
-                                                    fill: false,
-                                                    borderColor: 'rgba(28, 184, 23, .9)',
-                                                    tension: 0.1
-                                                    }]
-                                                },
-                                                 options: {
-                                                    responsive: true,
-                                                    scales: {
-                                                    x: {
-                                                        display: true,
-                                                        title: {
-                                                        display: true,
-                                                        text: ''
-                                                    }
-                                                },
-                                                    y: {
-                                                        display: true,
-                                                        title: {
-                                                        display: true,
-                                                        text: 'Read'
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    });
 
-                                })
-                                .catch(error => {
-                                    console.error('Erro:', error);
-                                });
+                                     
+                                }
+                            };
+                            xhr.send();
                         </script>
 
                         </div>
@@ -202,7 +142,7 @@
                                 <tbody>
                                     <?php
                                     include("db_connection.php");
-                                    $sql_data = "SELECT sensor_read_id, sensor_description, sensor_read,TIME_FORMAT(sensor_read_timestamp, '%T')  AS read_timestamp FROM sensors_read INNER JOIN sensors ON sensor_sensors_id = sensor_id  ORDER BY sensor_read_id DESC LIMIT 10";
+                                    $sql_data = "SELECT sensor_read_id, sensor_description, sensor_read,TIME_FORMAT(sensor_read_timestamp, '%T')  AS read_timestamp FROM sensors_read INNER JOIN sensors ON sensor_sensors_id = sensor_id  ORDER BY sensor_read_id DESC LIMIT 20";
                                     $result_select_data = $conn->query($sql_data);
 
                                     while($row_select_data = $result_select_data->fetch_assoc())
@@ -210,7 +150,7 @@
                                     echo "
                                     <tr>
                                         <th scope='row'>". $row_select_data['sensor_read_id'] ."</th>
-                                        <td>".$row_select_data['sensor_description']."</td>
+                                        <td >".$row_select_data['sensor_description']."</td>
                                         <td>".$row_select_data['sensor_read']."</td>
                                         <td>".$row_select_data['read_timestamp']."</td>
                                     </tr>";
@@ -218,30 +158,6 @@
                                     ?>
                                 </tbody>
                             </table>
-                            <div class="border rounded p-4 pb-0 mb-4">
-                                <figure>
-                                    <?php
-                                    $sql_dark = "SELECT sensor_read, TIME_FORMAT(sensor_read_timestamp, '%T')  AS read_timestamp FROM sensors_read WHERE sensor_sensors_id = 4 ORDER BY sensor_read_id DESC LIMIT 1";
-
-                                     $result_select_dark = $conn->query($sql_dark);
-
-                                    while($row_select_dark = $result_select_dark->fetch_assoc())
-                                    {
-
-                                    echo "<blockquote class='blockquote'>";
-                                    echo $row_select_dark['sensor_read'] == 1 ? 
-                                        "<p>It's dark now! </p>" : 
-                                        "<p>It's clear now! </p>";
-                                    echo "</blockquote>";
-                                    
-                                    echo "<figcaption class='blockquote-footer'>";
-                                    echo "Timestamps:". $row_select_dark['read_timestamp']; 
-                                        
-                                   echo " </figcaption>";
-                                    }
-                                    ?>
-                                </figure>
-                            </div>
                         </div>
                     </div>
                    

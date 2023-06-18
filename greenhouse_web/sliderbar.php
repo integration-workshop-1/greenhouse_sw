@@ -9,7 +9,8 @@
                 </div>
                 <div class="navbar-nav w-100">
                     
-                    
+                   <a href="index.php" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Home</a>
+
                     <a href="manual_data.php" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Manual data</a>
                     <a href="chart.php" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">
@@ -21,6 +22,20 @@
 
                         </div>
                     </div>
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-th me-2"></i>History</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+
+                            <a href="soil_moisture.php" class="dropdown-item">Soil moisture sensor</a>
+                            <a href="air_temperature.php" class="dropdown-item">Air temperature sensor</a>
+                            <a href="air_humidity.php" class="dropdown-item">Air humidity sensor</a>
+                            <a href="ldr_sensor.php" class="dropdown-item">LDR sensor</a>
+
+                        </div>
+                    </div>
+
+
                 </div>
             </nav>
         </div>
